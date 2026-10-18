@@ -82,7 +82,7 @@ Ask your assistant about the drive:
 - *"How long will it take to get to daycare?"*
 - *"Is there anything on the way to the airport?"*
 
-The assistant responds with a spoken summary while displaying a traffic card in the media panel showing the live travel time, delay versus free-flow traffic, distance, expected arrival time, a traffic-level indicator, and any reported incidents on the route. Saved destination names make voice requests natural: add lines such as `Work = 100 Light St, Baltimore, MD` under **Saved Destinations** in the traffic tool options. The card uses the same narrow panel layout as weather, with the same **Keep on screen for** lifetime.
+The assistant responds with a spoken summary while displaying a directions-style traffic card in the media panel: the main road, a short recommendation, the live travel time in green, and the distance. **Details** expands the arrival time, delay versus free-flow traffic, traffic level, and any reported incidents on the route. **Preview** opens the route in Google Maps. Saved destination names make voice requests natural: add lines such as `Work = 100 Light St, Baltimore, MD` under **Saved Destinations** in the traffic tool options. The card uses the same **Keep on screen for** lifetime as the other tool panels.
 
 Traffic data comes from [TomTom](https://developer.tomtom.com/) and needs a TomTom API key with the Routing and Search APIs enabled. Set it up under **Settings > Devices & Services > Add Integration > Voice Satellite LLM Tools > Traffic**. If **Start Address** is left empty, routes start at the Home Assistant home location.
 

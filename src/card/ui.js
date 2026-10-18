@@ -177,99 +177,154 @@ const LOVELACE_CARD_CSS = `
 // have their own hard-coded text color get an override below.
 const TRAFFIC_CARD_CSS = `
 #voice-satellite-ui .vs-image-panel.traffic {
+  width: min(52vw, 680px);
   background: none;
   border-radius: 0;
   padding: 0;
   box-shadow: none;
   border: none;
 }
+#voice-satellite-ui.has-traffic .vs-chat-container {
+  right: calc(7.5% + min(52vw, 680px) + 40px);
+}
 #voice-satellite-ui .vs-traffic-card {
-  padding: 8px 0;
-  color: var(--df-text, var(--gh-text, var(--ib-text, var(--ks-text, var(--wf-text, var(--lf-text, var(--primary-text-color, currentColor)))))));
+  --vs-traffic-surface: var(--ks-surface, var(--df-surface, var(--gh-surface, var(--ib-surface, var(--wf-surface, var(--lf-surface, var(--card-background-color, #ffffff)))))));
+  --vs-traffic-text: var(--ks-text, var(--df-text, var(--gh-text, var(--ib-text, var(--wf-text, var(--lf-text, var(--primary-text-color, #212121)))))));
+  --vs-traffic-link: #0B7C86;
+  --vs-traffic-good: #0F9D58;
+  --vs-traffic-warn: #E67E22;
+  --vs-traffic-bad: #D93025;
+  box-sizing: border-box;
+  padding: 18px 22px 16px 24px;
+  background: var(--vs-traffic-surface);
+  color: var(--vs-traffic-text);
+  border-left: 7px solid #0E9F9F;
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14);
+}
+#voice-satellite-ui.vs-dark .vs-traffic-card {
+  --vs-traffic-link: #5FD3DC;
+  --vs-traffic-good: #5BD17A;
+  --vs-traffic-warn: #F2B84B;
+  --vs-traffic-bad: #FF7B72;
 }
 #voice-satellite-ui[data-skin="siri"] .vs-traffic-card,
 #voice-satellite-ui[data-skin="alexa"] .vs-traffic-card {
+  background: rgba(255, 255, 255, 0.10);
   color: #FFFFFF;
+  --vs-traffic-link: #7BE0E8;
+  --vs-traffic-good: #6BE38B;
+  --vs-traffic-warn: #F6C15B;
+  --vs-traffic-bad: #FF8A80;
 }
 #voice-satellite-ui[data-skin="retro-terminal"] .vs-traffic-card {
+  background: #0A0A0A;
   color: #33FF33;
+  --vs-traffic-link: #33FF33;
+  --vs-traffic-good: #33FF33;
+  --vs-traffic-warn: #F2D024;
+  --vs-traffic-bad: #FF5C5C;
 }
-#voice-satellite-ui .vs-traffic-header {
+#voice-satellite-ui .vs-traffic-main {
   display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 12px 4px;
+  align-items: flex-start;
+  gap: 18px;
 }
 #voice-satellite-ui .vs-traffic-icon {
-  width: 88px;
-  height: 88px;
+  width: 42px;
+  height: 42px;
   flex-shrink: 0;
-  opacity: 0.9;
+  margin-top: 2px;
 }
-#voice-satellite-ui .vs-traffic-info {
+#voice-satellite-ui .vs-traffic-body {
   flex: 1;
   min-width: 0;
 }
-#voice-satellite-ui .vs-traffic-route {
-  font-size: calc(17px * var(--vs-text-scale, 1));
-  opacity: 0.65;
+#voice-satellite-ui .vs-traffic-title {
+  font-size: calc(23px * var(--vs-text-scale, 1));
+  font-weight: 500;
+  line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-#voice-satellite-ui .vs-traffic-time {
-  font-size: calc(52px * var(--vs-text-scale, 1));
-  font-weight: 500;
-  line-height: 1.1;
+#voice-satellite-ui .vs-traffic-description {
+  margin-top: 6px;
+  font-size: calc(17px * var(--vs-text-scale, 1));
+  line-height: 1.35;
+  opacity: 0.64;
 }
-#voice-satellite-ui .vs-traffic-meta {
+#voice-satellite-ui .vs-traffic-stats {
+  flex-shrink: 0;
+  margin-left: 10px;
+  text-align: right;
+}
+#voice-satellite-ui .vs-traffic-time {
+  font-size: calc(29px * var(--vs-text-scale, 1));
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--vs-traffic-good);
+}
+#voice-satellite-ui .vs-traffic-time.heavy {
+  color: var(--vs-traffic-warn);
+}
+#voice-satellite-ui .vs-traffic-time.severe {
+  color: var(--vs-traffic-bad);
+}
+#voice-satellite-ui .vs-traffic-distance {
+  margin-top: 8px;
+  font-size: calc(18px * var(--vs-text-scale, 1));
+  opacity: 0.6;
+  white-space: nowrap;
+}
+#voice-satellite-ui .vs-traffic-actions {
+  display: flex;
+  gap: 26px;
+  margin-top: 14px;
+}
+#voice-satellite-ui .vs-traffic-action {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: var(--vs-traffic-link);
+  font: inherit;
+  font-size: calc(17px * var(--vs-text-scale, 1));
+  font-weight: 600;
+  cursor: pointer;
+}
+#voice-satellite-ui .vs-traffic-action:focus-visible {
+  outline: 2px solid var(--vs-traffic-link);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+#voice-satellite-ui .vs-traffic-details {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+}
+#voice-satellite-ui .vs-traffic-details[hidden] {
+  display: none;
+}
+#voice-satellite-ui .vs-traffic-detail-summary {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  font-size: calc(17px * var(--vs-text-scale, 1));
-  opacity: 0.8;
-}
-#voice-satellite-ui .vs-traffic-delay.delayed {
-  color: #F39C12;
-  opacity: 1;
-  font-weight: 600;
-}
-#voice-satellite-ui .vs-traffic-delay.on-time {
-  color: #2ECC71;
-  opacity: 1;
-  font-weight: 600;
-}
-#voice-satellite-ui .vs-traffic-level {
-  display: flex;
-  align-items: center;
   gap: 8px;
-  padding: 4px 4px 10px;
-  font-size: calc(17px * var(--vs-text-scale, 1));
-  opacity: 0.8;
+  font-size: calc(16px * var(--vs-text-scale, 1));
+  opacity: 0.7;
 }
-#voice-satellite-ui .vs-traffic-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: currentColor;
-}
-#voice-satellite-ui .vs-traffic-level.light .vs-traffic-dot { background: #2ECC71; }
-#voice-satellite-ui .vs-traffic-level.moderate .vs-traffic-dot { background: #F1C40F; }
-#voice-satellite-ui .vs-traffic-level.heavy .vs-traffic-dot { background: #E67E22; }
-#voice-satellite-ui .vs-traffic-level.severe .vs-traffic-dot { background: #E74C3C; }
-#voice-satellite-ui .vs-traffic-divider {
-  height: 1px;
-  margin: 6px 4px;
-  background: currentColor;
-  opacity: 0.15;
+#voice-satellite-ui .vs-traffic-detail-sep {
+  opacity: 0.6;
 }
 #voice-satellite-ui .vs-traffic-incidents {
   display: flex;
   flex-direction: column;
+  margin-top: 6px;
 }
 #voice-satellite-ui .vs-traffic-incident {
-  padding: 8px 4px;
-  border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  padding: 9px 0;
+  border-top: 1px solid color-mix(in srgb, currentColor 10%, transparent);
 }
 #voice-satellite-ui .vs-traffic-incident:first-child {
   border-top: none;
@@ -281,13 +336,13 @@ const TRAFFIC_CARD_CSS = `
 }
 #voice-satellite-ui .vs-traffic-incident-title {
   flex: 1;
-  font-size: calc(18px * var(--vs-text-scale, 1));
+  font-size: calc(17px * var(--vs-text-scale, 1));
   font-weight: 500;
 }
 #voice-satellite-ui .vs-traffic-incident-delay {
-  font-size: calc(16px * var(--vs-text-scale, 1));
+  font-size: calc(15px * var(--vs-text-scale, 1));
   font-weight: 600;
-  opacity: 0.85;
+  opacity: 0.8;
   white-space: nowrap;
 }
 #voice-satellite-ui .vs-traffic-incident-desc {
@@ -295,13 +350,63 @@ const TRAFFIC_CARD_CSS = `
   font-size: calc(15px * var(--vs-text-scale, 1));
   opacity: 0.6;
 }
-#voice-satellite-ui .vs-traffic-incident.moderate .vs-traffic-incident-title { color: #F1C40F; }
-#voice-satellite-ui .vs-traffic-incident.major .vs-traffic-incident-title { color: #E67E22; }
-#voice-satellite-ui .vs-traffic-incident.closure .vs-traffic-incident-title { color: #E74C3C; }
+#voice-satellite-ui .vs-traffic-incident.moderate .vs-traffic-incident-title {
+  color: var(--vs-traffic-warn);
+}
+#voice-satellite-ui .vs-traffic-incident.major .vs-traffic-incident-title {
+  color: var(--vs-traffic-warn);
+}
+#voice-satellite-ui .vs-traffic-incident.closure .vs-traffic-incident-title {
+  color: var(--vs-traffic-bad);
+}
 #voice-satellite-ui .vs-traffic-empty {
-  padding: 8px 4px;
-  font-size: calc(17px * var(--vs-text-scale, 1));
+  padding: 8px 0 2px;
+  font-size: calc(16px * var(--vs-text-scale, 1));
   opacity: 0.6;
+}
+@media (max-width: 1100px) {
+  #voice-satellite-ui .vs-traffic-icon {
+    width: 36px;
+    height: 36px;
+  }
+  #voice-satellite-ui .vs-traffic-title {
+    font-size: calc(20px * var(--vs-text-scale, 1));
+  }
+  #voice-satellite-ui .vs-traffic-description {
+    font-size: calc(15px * var(--vs-text-scale, 1));
+  }
+  #voice-satellite-ui .vs-traffic-time {
+    font-size: calc(26px * var(--vs-text-scale, 1));
+  }
+  #voice-satellite-ui .vs-traffic-distance {
+    font-size: calc(16px * var(--vs-text-scale, 1));
+  }
+  #voice-satellite-ui .vs-traffic-action {
+    font-size: calc(15px * var(--vs-text-scale, 1));
+  }
+}
+@media (max-width: 900px) {
+  #voice-satellite-ui .vs-traffic-title {
+    font-size: calc(18px * var(--vs-text-scale, 1));
+  }
+  #voice-satellite-ui .vs-traffic-description {
+    font-size: calc(14px * var(--vs-text-scale, 1));
+  }
+  #voice-satellite-ui .vs-traffic-time {
+    font-size: calc(23px * var(--vs-text-scale, 1));
+  }
+}
+@media (orientation: portrait) {
+  #voice-satellite-ui .vs-image-panel.traffic {
+    left: 50%;
+    right: auto;
+    width: min(92%, 680px);
+    transform: translateX(-50%);
+  }
+  #voice-satellite-ui.has-traffic .vs-chat-container {
+    left: 7.5%;
+    right: 7.5%;
+  }
 }
 `;
 
@@ -1128,87 +1233,148 @@ export class UIManager {
     const card = document.createElement('div');
     card.className = 'vs-traffic-card';
 
-    const header = document.createElement('div');
-    header.className = 'vs-traffic-header';
+    const main = document.createElement('div');
+    main.className = 'vs-traffic-main';
 
     const svgNs = 'http://www.w3.org/2000/svg';
     const icon = document.createElementNS(svgNs, 'svg');
     icon.classList.add('vs-traffic-icon');
     icon.setAttribute('viewBox', '0 0 24 24');
     icon.setAttribute('aria-hidden', 'true');
-    const iconPath = document.createElementNS(svgNs, 'path');
-    iconPath.setAttribute('fill', 'currentColor');
-    iconPath.setAttribute(
+    const bodyPath = document.createElementNS(svgNs, 'path');
+    bodyPath.setAttribute(
       'd',
-      'M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z',
+      'M5 16v-4l1.7-5h10.6L19 12v4h-2v2h-2v-2H9v2H7v-2H5z',
     );
-    icon.appendChild(iconPath);
-    header.appendChild(icon);
+    bodyPath.setAttribute('fill', 'none');
+    bodyPath.setAttribute('stroke', 'currentColor');
+    bodyPath.setAttribute('stroke-width', '1.6');
+    bodyPath.setAttribute('stroke-linejoin', 'round');
+    bodyPath.setAttribute('stroke-linecap', 'round');
+    icon.appendChild(bodyPath);
+    const windshield = document.createElementNS(svgNs, 'path');
+    windshield.setAttribute('d', 'M7.2 11.5h9.6');
+    windshield.setAttribute('fill', 'none');
+    windshield.setAttribute('stroke', 'currentColor');
+    windshield.setAttribute('stroke-width', '1.6');
+    windshield.setAttribute('stroke-linecap', 'round');
+    icon.appendChild(windshield);
+    for (const cx of [8, 16]) {
+      const wheel = document.createElementNS(svgNs, 'circle');
+      wheel.setAttribute('cx', String(cx));
+      wheel.setAttribute('cy', '14.8');
+      wheel.setAttribute('r', '1.05');
+      wheel.setAttribute('fill', 'currentColor');
+      icon.appendChild(wheel);
+    }
+    main.appendChild(icon);
 
-    const info = document.createElement('div');
-    info.className = 'vs-traffic-info';
+    const body = document.createElement('div');
+    body.className = 'vs-traffic-body';
 
-    const route = document.createElement('div');
-    route.className = 'vs-traffic-route';
-    route.textContent = [data.origin, data.destination]
-      .filter(Boolean)
-      .join(' \u2192 ');
-    info.appendChild(route);
+    const title = document.createElement('div');
+    title.className = 'vs-traffic-title';
+    title.textContent = data.via
+      ? `via ${data.via}`
+      : (data.destination
+        ? `To ${data.destination}`
+        : this._t('full.ui.traffic.title', 'Traffic'));
+    body.appendChild(title);
 
+    const descriptionText = data.description || data.summary || '';
+    if (descriptionText) {
+      const description = document.createElement('div');
+      description.className = 'vs-traffic-description';
+      description.textContent = descriptionText;
+      body.appendChild(description);
+    }
+
+    const actions = document.createElement('div');
+    actions.className = 'vs-traffic-actions';
+    const detailsBtn = document.createElement('button');
+    detailsBtn.type = 'button';
+    detailsBtn.className = 'vs-traffic-action';
+    detailsBtn.setAttribute('aria-expanded', 'false');
+    const detailsLabel = this._t('full.ui.traffic.details', 'Details');
+    const hideLabel = this._t('full.ui.traffic.hide_details', 'Hide details');
+    detailsBtn.textContent = detailsLabel;
+    actions.appendChild(detailsBtn);
+
+    if (data.map_url) {
+      const preview = document.createElement('button');
+      preview.type = 'button';
+      preview.className = 'vs-traffic-action';
+      preview.textContent = this._t('full.ui.traffic.preview', 'Preview');
+      preview.addEventListener('click', () => {
+        window.open(data.map_url, '_blank', 'noopener,noreferrer');
+      });
+      actions.appendChild(preview);
+    }
+    body.appendChild(actions);
+    main.appendChild(body);
+
+    const stats = document.createElement('div');
+    stats.className = 'vs-traffic-stats';
     const minutes = Number(data.travel_time_minutes);
     const time = document.createElement('div');
     time.className = 'vs-traffic-time';
+    if (data.traffic_level === 'heavy' || data.traffic_level === 'severe') {
+      time.classList.add(data.traffic_level);
+    }
     time.textContent = Number.isFinite(minutes)
       ? this._t('full.ui.traffic.minutes', '{value} min', { value: minutes })
       : (data.travel_time || '');
-    info.appendChild(time);
+    stats.appendChild(time);
 
-    const meta = document.createElement('div');
-    meta.className = 'vs-traffic-meta';
-    const delayMinutes = Number(data.delay_minutes) || 0;
-    const delay = document.createElement('span');
-    delay.className = `vs-traffic-delay ${delayMinutes >= 1 ? 'delayed' : 'on-time'}`;
-    delay.textContent = delayMinutes >= 1
-      ? this._t('full.ui.traffic.delay', '+{value} min', { value: delayMinutes })
-      : this._t('full.ui.traffic.on_time', 'On time');
-    meta.appendChild(delay);
+    const distanceText = data.distance_long || data.distance || '';
+    if (distanceText) {
+      const distance = document.createElement('div');
+      distance.className = 'vs-traffic-distance';
+      distance.textContent = distanceText;
+      stats.appendChild(distance);
+    }
+    main.appendChild(stats);
+    card.appendChild(main);
 
-    const metaParts = [];
-    if (data.distance) metaParts.push(data.distance);
+    const details = document.createElement('div');
+    details.className = 'vs-traffic-details';
+    details.hidden = true;
+
+    const summaryRow = document.createElement('div');
+    summaryRow.className = 'vs-traffic-detail-summary';
+    const summaryParts = [];
     if (data.arrival_time) {
-      metaParts.push(this._t('full.ui.traffic.arrive', 'Arrive {time}', { time: data.arrival_time }));
+      summaryParts.push(this._t('full.ui.traffic.arrive', 'Arrive {time}', {
+        time: data.arrival_time,
+      }));
     }
-    for (const part of metaParts) {
-      const separator = document.createElement('span');
-      separator.className = 'vs-traffic-separator';
-      separator.setAttribute('aria-hidden', 'true');
-      separator.textContent = '\u00B7';
-      meta.appendChild(separator);
-      const item = document.createElement('span');
-      item.textContent = part;
-      meta.appendChild(item);
+    const delayMinutes = Number(data.delay_minutes) || 0;
+    summaryParts.push(delayMinutes >= 1
+      ? this._t('full.ui.traffic.delay', '+{value} min', { value: delayMinutes })
+      : this._t('full.ui.traffic.on_time', 'On time'));
+    if (data.free_flow_minutes) {
+      summaryParts.push(this._t('full.ui.traffic.free_flow', 'Free-flow {value} min', {
+        value: data.free_flow_minutes,
+      }));
     }
-    info.appendChild(meta);
-    header.appendChild(info);
-    card.appendChild(header);
-
     const level = data.traffic_level || 'light';
-    const levelRow = document.createElement('div');
-    levelRow.className = `vs-traffic-level ${level}`;
-    const dot = document.createElement('span');
-    dot.className = 'vs-traffic-dot';
-    dot.setAttribute('aria-hidden', 'true');
-    const levelLabel = document.createElement('span');
-    levelLabel.textContent = this._t(
+    summaryParts.push(this._t(
       TRAFFIC_LEVEL_KEYS[level] || 'full.ui.traffic.light',
       'Light traffic',
-    );
-    levelRow.append(dot, levelLabel);
-    card.appendChild(levelRow);
-
-    const divider = document.createElement('div');
-    divider.className = 'vs-traffic-divider';
-    card.appendChild(divider);
+    ));
+    summaryParts.forEach((part, index) => {
+      if (index > 0) {
+        const separator = document.createElement('span');
+        separator.className = 'vs-traffic-detail-sep';
+        separator.setAttribute('aria-hidden', 'true');
+        separator.textContent = '\u00B7';
+        summaryRow.appendChild(separator);
+      }
+      const item = document.createElement('span');
+      item.textContent = part;
+      summaryRow.appendChild(item);
+    });
+    details.appendChild(summaryRow);
 
     const incidents = Array.isArray(data.incidents) ? data.incidents : [];
     if (incidents.length > 0) {
@@ -1218,13 +1384,13 @@ export class UIManager {
         const row = document.createElement('div');
         row.className = `vs-traffic-incident ${incident.severity || 'minor'}`;
 
-        const main = document.createElement('div');
-        main.className = 'vs-traffic-incident-main';
+        const incidentMain = document.createElement('div');
+        incidentMain.className = 'vs-traffic-incident-main';
 
-        const title = document.createElement('span');
-        title.className = 'vs-traffic-incident-title';
-        title.textContent = incident.title || '';
-        main.appendChild(title);
+        const incidentTitle = document.createElement('span');
+        incidentTitle.className = 'vs-traffic-incident-title';
+        incidentTitle.textContent = incident.title || '';
+        incidentMain.appendChild(incidentTitle);
 
         const incidentMinutes = Number(incident.delay_minutes) || 0;
         if (incidentMinutes >= 1) {
@@ -1235,19 +1401,19 @@ export class UIManager {
             '+{value} min',
             { value: incidentMinutes },
           );
-          main.appendChild(incidentDelay);
+          incidentMain.appendChild(incidentDelay);
         }
-        row.appendChild(main);
+        row.appendChild(incidentMain);
 
         if (incident.description) {
-          const description = document.createElement('div');
-          description.className = 'vs-traffic-incident-desc';
-          description.textContent = incident.description;
-          row.appendChild(description);
+          const incidentDescription = document.createElement('div');
+          incidentDescription.className = 'vs-traffic-incident-desc';
+          incidentDescription.textContent = incident.description;
+          row.appendChild(incidentDescription);
         }
         list.appendChild(row);
       }
-      card.appendChild(list);
+      details.appendChild(list);
     } else {
       const empty = document.createElement('div');
       empty.className = 'vs-traffic-empty';
@@ -1255,14 +1421,22 @@ export class UIManager {
         'full.ui.traffic.no_incidents',
         'No reported incidents',
       );
-      card.appendChild(empty);
+      details.appendChild(empty);
     }
+
+    detailsBtn.addEventListener('click', () => {
+      const opening = details.hidden;
+      details.hidden = !opening;
+      detailsBtn.textContent = opening ? hideLabel : detailsLabel;
+      detailsBtn.setAttribute('aria-expanded', String(opening));
+    });
+    card.appendChild(details);
 
     scroll.appendChild(card);
 
     // Featured mode - no linger timeout
     panel.classList.add('traffic', 'featured', 'visible');
-    this._globalUI.classList.add('has-featured');
+    this._globalUI.classList.add('has-featured', 'has-traffic');
   }
 
   /**
@@ -1557,7 +1731,7 @@ export class UIManager {
     }
     this._lovelaceCards = [];
     this._globalUI.classList.remove(
-      'has-images', 'has-featured', 'has-card', 'has-card-wide',
+      'has-images', 'has-featured', 'has-traffic', 'has-card', 'has-card-wide',
     );
     this.hideLightbox();
   }
