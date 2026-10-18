@@ -982,6 +982,10 @@ export class UIManager {
     if (!this._globalUI) return;
     const panel = this._globalUI.querySelector('.vs-image-panel');
     const scroll = panel.querySelector('.vs-panel-scroll');
+    // A traffic card is wider than the other featured panels; drop its
+    // mode before drawing a different kind of result in the same turn.
+    panel.classList.remove('traffic');
+    this._globalUI.classList.remove('has-traffic');
 
     const items = results;
     const single = items.length === 1;
@@ -1039,6 +1043,13 @@ export class UIManager {
     if (!this._globalUI) return;
     const panel = this._globalUI.querySelector('.vs-image-panel');
     const scroll = panel.querySelector('.vs-panel-scroll');
+    // A traffic card is wider than the other featured panels; drop its
+    // mode before drawing a different kind of result in the same turn.
+    panel.classList.remove('traffic');
+    this._globalUI.classList.remove('has-traffic');
+
+    panel.classList.remove('featured');
+    this._globalUI.classList.remove('has-featured');
 
     const grid = document.createElement('div');
     grid.className = 'vs-video-grid';
@@ -1123,6 +1134,10 @@ export class UIManager {
     if (!this._globalUI) return;
     const panel = this._globalUI.querySelector('.vs-image-panel');
     const scroll = panel.querySelector('.vs-panel-scroll');
+    // A traffic card is wider than the other featured panels; drop its
+    // mode before drawing a different kind of result in the same turn.
+    panel.classList.remove('traffic');
+    this._globalUI.classList.remove('has-traffic');
 
     const card = document.createElement('div');
     card.className = 'vs-weather-card';
@@ -1229,6 +1244,10 @@ export class UIManager {
     if (!this._globalUI) return;
     const panel = this._globalUI.querySelector('.vs-image-panel');
     const scroll = panel.querySelector('.vs-panel-scroll');
+    // A traffic card is wider than the other featured panels; drop its
+    // mode before drawing a different kind of result in the same turn.
+    panel.classList.remove('traffic');
+    this._globalUI.classList.remove('has-traffic');
 
     const card = document.createElement('div');
     card.className = 'vs-traffic-card';
@@ -1447,6 +1466,10 @@ export class UIManager {
     if (!this._globalUI) return;
     const panel = this._globalUI.querySelector('.vs-image-panel');
     const scroll = panel.querySelector('.vs-panel-scroll');
+    // A traffic card is wider than the other featured panels; drop its
+    // mode before drawing a different kind of result in the same turn.
+    panel.classList.remove('traffic');
+    this._globalUI.classList.remove('has-traffic');
 
     const card = document.createElement('div');
     card.className = 'vs-financial-card';
@@ -1552,6 +1575,10 @@ export class UIManager {
     if (!this._globalUI || !config || typeof config !== 'object') return;
     const panel = this._globalUI.querySelector('.vs-image-panel');
     const scroll = panel.querySelector('.vs-panel-scroll');
+    // A traffic card is wider than the other featured panels; drop its
+    // mode before drawing a different kind of result in the same turn.
+    panel.classList.remove('traffic', 'featured');
+    this._globalUI.classList.remove('has-traffic', 'has-featured');
 
     const wrap = document.createElement('div');
     wrap.className = 'vs-lovelace-card';
