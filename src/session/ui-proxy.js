@@ -156,6 +156,10 @@ export class UIBroadcastProxy {
     for (const c of this._cards) c.ui.showWeatherPanel(data);
   }
 
+  showTrafficPanel(data) {
+    for (const c of this._cards) c.ui.showTrafficPanel(data);
+  }
+
   showFinancialPanel(data) {
     for (const c of this._cards) c.ui.showFinancialPanel(data);
   }

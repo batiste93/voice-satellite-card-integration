@@ -240,6 +240,13 @@ export function handleIntentProgress(mgr, eventData) {
       return;
     }
 
+    // Traffic - show drive time and incidents in the media panel
+    // Tool name: voice_satellite_llm_tools_traffic__get_traffic
+    if (toolName?.endsWith('get_traffic') && toolResult?.travel_time_minutes != null && !toolResult.error) {
+      mgr.card.chat.addTraffic(toolResult);
+      return;
+    }
+
     // Financial data - show stock/crypto/currency card in media panel
     // Tool name: voice-satellite-card-financial-data__get_financial_data
     if (toolName?.includes('financial-data__get_financial_data') && toolResult?.query_type && !toolResult.error) {

@@ -165,7 +165,7 @@ data:
   prompt: "What's the weather forecast for today?"
 ```
 
-When fired, the wake chime plays, the prompt runs through the satellite's pipeline (skipping the STT stage), and the LLM response appears in the standard assistant bubble. Tool-call rich media (weather, image, video, stocks, etc.) renders the same way it does for a wake-word interaction. The bubble stays on screen indefinitely until the user dismisses it (stop word, double-tap, or Escape).
+When fired, the wake chime plays, the prompt runs through the satellite's pipeline (skipping the STT stage), and the LLM response appears in the standard assistant bubble. Tool-call rich media (weather, traffic, image, video, stocks, etc.) renders the same way it does for a wake-word interaction. The bubble stays on screen indefinitely until the user dismisses it (stop word, double-tap, or Escape).
 
 ### Fields
 

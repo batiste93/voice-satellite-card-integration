@@ -101,6 +101,10 @@ export class ChatManager {
     this._card.ui.showWeatherPanel(weatherData);
   }
 
+  addTraffic(data) {
+    this._card.ui.showTrafficPanel(data);
+  }
+
   addFinancial(data) {
     this._card.ui.showFinancialPanel(data);
   }

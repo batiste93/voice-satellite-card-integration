@@ -34,7 +34,7 @@ Voice Satellite runs as a **global engine** that loads on every page of Home Ass
 - **Skins** - 10 built-in skins (Default, Alexa, Google Home, Home Assistant, Ink Blobs, Kiosk Satellite, Lens Flares, Retro Terminal, Siri, Waveform) with CSS overrides. Reactive audio-level animation on the activity bar
 - **Screensaver** - black overlay, image/video/folder from the HA media library, or live camera feed. Cross-fades between folder items; integrates with kiosk app backlight dimming and motion-dismiss (Kiosk Satellite, Fully Kiosk)
 - **Mini card** - optional `voice-satellite-mini-card` for in-dashboard text display without the fullscreen overlay
-- **LLM tools** *(experimental)* - image/video/web/Wikipedia search, weather, stocks/crypto with visual panels. Requires [Voice Satellite - LLM Tools](https://github.com/jxlarrea/voice-satellite-card-llm-tools)
+- **LLM tools** *(experimental)* - image/video/web/Wikipedia search, weather, traffic, stocks/crypto with visual panels. Requires [Voice Satellite - LLM Tools](https://github.com/jxlarrea/voice-satellite-card-llm-tools)
 - **Works on any device** - tablets, phones, computers, kiosks
 - **Kiosk Satellite companion app** - on Android, the free official [Kiosk Satellite](https://kiosksatellite.com) app runs wake word detection natively: it keeps listening with the screen off or another app in front, starts on boot, and assigns the satellite entity automatically during its setup wizard
 
@@ -171,7 +171,7 @@ See the [Timers reference](docs/timers.md) for voice sentences, the action schem
 
 ## Experimental: LLM Tools
 
-With a tool-capable conversation agent (OpenAI, Google Generative AI, Anthropic, Ollama, etc.) plus the companion [Voice Satellite - LLM Tools](https://github.com/jxlarrea/voice-satellite-card-llm-tools) integration, Voice Satellite can display rich visual results inline: image grids, YouTube video cards, weather forecasts, stock/crypto cards, currency conversions, and web/Wikipedia summaries with featured images.
+With a tool-capable conversation agent (OpenAI, Google Generative AI, Anthropic, Ollama, etc.) plus the companion [Voice Satellite - LLM Tools](https://github.com/jxlarrea/voice-satellite-card-llm-tools) integration, Voice Satellite can display rich visual results inline: image grids, YouTube video cards, weather forecasts, traffic cards, stock/crypto cards, currency conversions, and web/Wikipedia summaries with featured images.
 
 See the [LLM Tools reference](docs/llm-tools.md) for each supported tool and the voice commands that trigger them.
 

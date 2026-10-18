@@ -88,6 +88,10 @@ export class ChatBroadcastProxy {
     for (const c of this._cards) c.chat.addWeather(data);
   }
 
+  addTraffic(data) {
+    for (const c of this._cards) c.chat.addTraffic(data);
+  }
+
   addFinancial(data) {
     for (const c of this._cards) c.chat.addFinancial(data);
   }

@@ -79,6 +79,17 @@ export default {
           exceptional: 'Unusual',
         },
       },
+      traffic: {
+        minutes: '{value} min',
+        delay: '+{value} min',
+        on_time: 'On time',
+        arrive: 'Arrive {time}',
+        light: 'Light traffic',
+        moderate: 'Moderate traffic',
+        heavy: 'Heavy traffic',
+        severe: 'Severe delays',
+        no_incidents: 'No reported incidents',
+      },
       financial: {
         detail_24h_high: '24h High: {value}',
         detail_24h_low: '24h Low: {value}',

@@ -11,5 +11,5 @@ Long-form reference for Voice Satellite. For the overview, install, and quick st
 - [TTS Output](tts-output.md) - Browser vs remote `media_player` routing, Announcement vs Normal Playback behavior
 - [Customization](customization.md) - Skins, custom CSS, waveform variables, custom sounds
 - [Timers](timers.md) - Voice control, the start_timer action, panel toggles, and entity attributes
-- [Experimental: LLM Tools](llm-tools.md) - Image/video/web/Wikipedia/weather/financial panels
+- [Experimental: LLM Tools](llm-tools.md) - Image/video/web/Wikipedia/weather/traffic/financial panels
 - [Troubleshooting](troubleshooting.md) - Common issues and fixes

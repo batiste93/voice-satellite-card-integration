@@ -660,8 +660,8 @@ export function onTTSComplete(session, playbackFailed) {
     return;
   }
 
-  // Anything in the media panel - images, videos, weather, financial data,
-  // a Lovelace card from a tool - is there to be looked at, so it all
+  // Anything in the media panel - images, videos, weather, traffic, financial
+  // data, a Lovelace card from a tool - is there to be looked at, so it all
   // shares one on-screen lifetime, set by the Media Panel slider.
   // Stop only the mic reactivity so the bar doesn't respond to audio.
   if (session.ui.hasVisibleMedia()) {

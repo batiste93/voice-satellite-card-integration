@@ -13,6 +13,7 @@ Voice Satellite supports displaying rich visual results from LLM tool calls inli
 - [Web Search](#web-search)
 - [Wikipedia Search](#wikipedia-search)
 - [Weather Forecast](#weather-forecast)
+- [Traffic](#traffic)
 - [Financial Data](#financial-data)
 - [Lovelace Cards From Any Tool](#lovelace-cards-from-any-tool)
 
@@ -72,6 +73,18 @@ Ask your assistant about the weather:
 - *"What's the forecast for this week?"*
 
 The assistant responds with a spoken summary while displaying a weather card in the media panel showing the current temperature, condition, humidity, and a scrollable forecast (hourly, daily, or twice-daily depending on the range requested). The weather icon is sourced from Google Weather SVGs via Home Assistant. The weather card uses the same narrow panel layout as web search and Wikipedia, and stays for the **Keep on screen for** duration set under **Media Panel** in the sidebar panel.
+
+## Traffic
+
+Ask your assistant about the drive:
+
+- *"How is traffic to work?"*
+- *"How long will it take to get to daycare?"*
+- *"Is there anything on the way to the airport?"*
+
+The assistant responds with a spoken summary while displaying a traffic card in the media panel showing the live travel time, delay versus free-flow traffic, distance, expected arrival time, a traffic-level indicator, and any reported incidents on the route. Saved destination names make voice requests natural: add lines such as `Work = 100 Light St, Baltimore, MD` under **Saved Destinations** in the traffic tool options. The card uses the same narrow panel layout as weather, with the same **Keep on screen for** lifetime.
+
+Traffic data comes from [TomTom](https://developer.tomtom.com/) and needs a TomTom API key with the Routing and Search APIs enabled. Set it up under **Settings > Devices & Services > Add Integration > Voice Satellite LLM Tools > Traffic**. If **Start Address** is left empty, routes start at the Home Assistant home location.
 
 ## Financial Data
 

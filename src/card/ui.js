@@ -171,6 +171,147 @@ const LOVELACE_CARD_CSS = `
   }
 }`;
 
+// Traffic card styling. Like the timer pill styles this is appended to
+// every skin, so it deliberately uses the inherited text color and
+// color-mix() rather than a skin-specific palette. The few skins that
+// have their own hard-coded text color get an override below.
+const TRAFFIC_CARD_CSS = `
+#voice-satellite-ui .vs-image-panel.traffic {
+  background: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  border: none;
+}
+#voice-satellite-ui .vs-traffic-card {
+  padding: 8px 0;
+  color: var(--df-text, var(--gh-text, var(--ib-text, var(--ks-text, var(--wf-text, var(--lf-text, var(--primary-text-color, currentColor)))))));
+}
+#voice-satellite-ui[data-skin="siri"] .vs-traffic-card,
+#voice-satellite-ui[data-skin="alexa"] .vs-traffic-card {
+  color: #FFFFFF;
+}
+#voice-satellite-ui[data-skin="retro-terminal"] .vs-traffic-card {
+  color: #33FF33;
+}
+#voice-satellite-ui .vs-traffic-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 4px;
+}
+#voice-satellite-ui .vs-traffic-icon {
+  width: 88px;
+  height: 88px;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+#voice-satellite-ui .vs-traffic-info {
+  flex: 1;
+  min-width: 0;
+}
+#voice-satellite-ui .vs-traffic-route {
+  font-size: calc(17px * var(--vs-text-scale, 1));
+  opacity: 0.65;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#voice-satellite-ui .vs-traffic-time {
+  font-size: calc(52px * var(--vs-text-scale, 1));
+  font-weight: 500;
+  line-height: 1.1;
+}
+#voice-satellite-ui .vs-traffic-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: calc(17px * var(--vs-text-scale, 1));
+  opacity: 0.8;
+}
+#voice-satellite-ui .vs-traffic-delay.delayed {
+  color: #F39C12;
+  opacity: 1;
+  font-weight: 600;
+}
+#voice-satellite-ui .vs-traffic-delay.on-time {
+  color: #2ECC71;
+  opacity: 1;
+  font-weight: 600;
+}
+#voice-satellite-ui .vs-traffic-level {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px 10px;
+  font-size: calc(17px * var(--vs-text-scale, 1));
+  opacity: 0.8;
+}
+#voice-satellite-ui .vs-traffic-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+}
+#voice-satellite-ui .vs-traffic-level.light .vs-traffic-dot { background: #2ECC71; }
+#voice-satellite-ui .vs-traffic-level.moderate .vs-traffic-dot { background: #F1C40F; }
+#voice-satellite-ui .vs-traffic-level.heavy .vs-traffic-dot { background: #E67E22; }
+#voice-satellite-ui .vs-traffic-level.severe .vs-traffic-dot { background: #E74C3C; }
+#voice-satellite-ui .vs-traffic-divider {
+  height: 1px;
+  margin: 6px 4px;
+  background: currentColor;
+  opacity: 0.15;
+}
+#voice-satellite-ui .vs-traffic-incidents {
+  display: flex;
+  flex-direction: column;
+}
+#voice-satellite-ui .vs-traffic-incident {
+  padding: 8px 4px;
+  border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+#voice-satellite-ui .vs-traffic-incident:first-child {
+  border-top: none;
+}
+#voice-satellite-ui .vs-traffic-incident-main {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+#voice-satellite-ui .vs-traffic-incident-title {
+  flex: 1;
+  font-size: calc(18px * var(--vs-text-scale, 1));
+  font-weight: 500;
+}
+#voice-satellite-ui .vs-traffic-incident-delay {
+  font-size: calc(16px * var(--vs-text-scale, 1));
+  font-weight: 600;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+#voice-satellite-ui .vs-traffic-incident-desc {
+  margin-top: 2px;
+  font-size: calc(15px * var(--vs-text-scale, 1));
+  opacity: 0.6;
+}
+#voice-satellite-ui .vs-traffic-incident.moderate .vs-traffic-incident-title { color: #F1C40F; }
+#voice-satellite-ui .vs-traffic-incident.major .vs-traffic-incident-title { color: #E67E22; }
+#voice-satellite-ui .vs-traffic-incident.closure .vs-traffic-incident-title { color: #E74C3C; }
+#voice-satellite-ui .vs-traffic-empty {
+  padding: 8px 4px;
+  font-size: calc(17px * var(--vs-text-scale, 1));
+  opacity: 0.6;
+}
+`;
+
+const TRAFFIC_LEVEL_KEYS = {
+  light: 'full.ui.traffic.light',
+  moderate: 'full.ui.traffic.moderate',
+  heavy: 'full.ui.traffic.heavy',
+  severe: 'full.ui.traffic.severe',
+};
+
 const CONDITION_LABEL_KEYS = {
   'sunny': 'full.ui.weather.conditions.sunny',
   'cloudy': 'full.ui.weather.conditions.cloudy',
@@ -976,6 +1117,155 @@ export class UIManager {
   }
 
   /**
+   * Show live traffic conditions in the media panel (featured mode).
+   * @param {object} data - Traffic tool result
+   */
+  showTrafficPanel(data) {
+    if (!this._globalUI) return;
+    const panel = this._globalUI.querySelector('.vs-image-panel');
+    const scroll = panel.querySelector('.vs-panel-scroll');
+
+    const card = document.createElement('div');
+    card.className = 'vs-traffic-card';
+
+    const header = document.createElement('div');
+    header.className = 'vs-traffic-header';
+
+    const svgNs = 'http://www.w3.org/2000/svg';
+    const icon = document.createElementNS(svgNs, 'svg');
+    icon.classList.add('vs-traffic-icon');
+    icon.setAttribute('viewBox', '0 0 24 24');
+    icon.setAttribute('aria-hidden', 'true');
+    const iconPath = document.createElementNS(svgNs, 'path');
+    iconPath.setAttribute('fill', 'currentColor');
+    iconPath.setAttribute(
+      'd',
+      'M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z',
+    );
+    icon.appendChild(iconPath);
+    header.appendChild(icon);
+
+    const info = document.createElement('div');
+    info.className = 'vs-traffic-info';
+
+    const route = document.createElement('div');
+    route.className = 'vs-traffic-route';
+    route.textContent = [data.origin, data.destination]
+      .filter(Boolean)
+      .join(' \u2192 ');
+    info.appendChild(route);
+
+    const minutes = Number(data.travel_time_minutes);
+    const time = document.createElement('div');
+    time.className = 'vs-traffic-time';
+    time.textContent = Number.isFinite(minutes)
+      ? this._t('full.ui.traffic.minutes', '{value} min', { value: minutes })
+      : (data.travel_time || '');
+    info.appendChild(time);
+
+    const meta = document.createElement('div');
+    meta.className = 'vs-traffic-meta';
+    const delayMinutes = Number(data.delay_minutes) || 0;
+    const delay = document.createElement('span');
+    delay.className = `vs-traffic-delay ${delayMinutes >= 1 ? 'delayed' : 'on-time'}`;
+    delay.textContent = delayMinutes >= 1
+      ? this._t('full.ui.traffic.delay', '+{value} min', { value: delayMinutes })
+      : this._t('full.ui.traffic.on_time', 'On time');
+    meta.appendChild(delay);
+
+    const metaParts = [];
+    if (data.distance) metaParts.push(data.distance);
+    if (data.arrival_time) {
+      metaParts.push(this._t('full.ui.traffic.arrive', 'Arrive {time}', { time: data.arrival_time }));
+    }
+    for (const part of metaParts) {
+      const separator = document.createElement('span');
+      separator.className = 'vs-traffic-separator';
+      separator.setAttribute('aria-hidden', 'true');
+      separator.textContent = '\u00B7';
+      meta.appendChild(separator);
+      const item = document.createElement('span');
+      item.textContent = part;
+      meta.appendChild(item);
+    }
+    info.appendChild(meta);
+    header.appendChild(info);
+    card.appendChild(header);
+
+    const level = data.traffic_level || 'light';
+    const levelRow = document.createElement('div');
+    levelRow.className = `vs-traffic-level ${level}`;
+    const dot = document.createElement('span');
+    dot.className = 'vs-traffic-dot';
+    dot.setAttribute('aria-hidden', 'true');
+    const levelLabel = document.createElement('span');
+    levelLabel.textContent = this._t(
+      TRAFFIC_LEVEL_KEYS[level] || 'full.ui.traffic.light',
+      'Light traffic',
+    );
+    levelRow.append(dot, levelLabel);
+    card.appendChild(levelRow);
+
+    const divider = document.createElement('div');
+    divider.className = 'vs-traffic-divider';
+    card.appendChild(divider);
+
+    const incidents = Array.isArray(data.incidents) ? data.incidents : [];
+    if (incidents.length > 0) {
+      const list = document.createElement('div');
+      list.className = 'vs-traffic-incidents';
+      for (const incident of incidents) {
+        const row = document.createElement('div');
+        row.className = `vs-traffic-incident ${incident.severity || 'minor'}`;
+
+        const main = document.createElement('div');
+        main.className = 'vs-traffic-incident-main';
+
+        const title = document.createElement('span');
+        title.className = 'vs-traffic-incident-title';
+        title.textContent = incident.title || '';
+        main.appendChild(title);
+
+        const incidentMinutes = Number(incident.delay_minutes) || 0;
+        if (incidentMinutes >= 1) {
+          const incidentDelay = document.createElement('span');
+          incidentDelay.className = 'vs-traffic-incident-delay';
+          incidentDelay.textContent = this._t(
+            'full.ui.traffic.delay',
+            '+{value} min',
+            { value: incidentMinutes },
+          );
+          main.appendChild(incidentDelay);
+        }
+        row.appendChild(main);
+
+        if (incident.description) {
+          const description = document.createElement('div');
+          description.className = 'vs-traffic-incident-desc';
+          description.textContent = incident.description;
+          row.appendChild(description);
+        }
+        list.appendChild(row);
+      }
+      card.appendChild(list);
+    } else {
+      const empty = document.createElement('div');
+      empty.className = 'vs-traffic-empty';
+      empty.textContent = this._t(
+        'full.ui.traffic.no_incidents',
+        'No reported incidents',
+      );
+      card.appendChild(empty);
+    }
+
+    scroll.appendChild(card);
+
+    // Featured mode - no linger timeout
+    panel.classList.add('traffic', 'featured', 'visible');
+    this._globalUI.classList.add('has-featured');
+  }
+
+  /**
    * Show financial data (stock/crypto/currency) in the media panel (featured mode).
    * @param {object} data - Financial tool result
    */
@@ -1261,7 +1551,8 @@ export class UIManager {
         while (scroll.firstChild) scroll.removeChild(scroll.firstChild);
       }
       panel.classList.remove(
-        'visible', 'featured', 'weather', 'financial', 'lovelace', 'wide',
+        'visible', 'featured', 'weather', 'traffic', 'financial', 'lovelace',
+        'wide',
       );
     }
     this._lovelaceCards = [];
@@ -1525,6 +1816,7 @@ export class UIManager {
   _injectSkinCSS() {
     const skin = this._card._activeSkin;
     if (!skin?.css) return;
+    if (this._globalUI) this._globalUI.dataset.skin = skin.id;
     let el = document.getElementById('voice-satellite-styles');
     if (!el) {
       el = document.createElement('style');
@@ -1532,7 +1824,7 @@ export class UIManager {
       document.head.appendChild(el);
     }
     el.textContent = skin.css + TIMER_SPLIT_PILL_CSS + PORTRAIT_MEDIA_CSS
-      + LOVELACE_CARD_CSS;
+      + LOVELACE_CARD_CSS + TRAFFIC_CARD_CSS;
   }
 
   _applyTextScale() {
